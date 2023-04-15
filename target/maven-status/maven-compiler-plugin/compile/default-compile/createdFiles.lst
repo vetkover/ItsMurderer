@@ -1,0 +1,9 @@
+me\vetkover\itsmurderer\events\onPlayerDeath.class
+me\vetkover\itsmurderer\stuff\checkingFiles.class
+me\vetkover\itsmurderer\stuff\JsonWork.class
+me\vetkover\itsmurderer\events\Events.class
+me\vetkover\itsmurderer\events\onPlayerJoin.class
+me\vetkover\itsmurderer\commands\setmurder.class
+me\vetkover\itsmurderer\Murderer.class
+me\vetkover\itsmurderer\commands\clearmurder.class
+me\vetkover\itsmurderer\stuff\YamlWork.class
