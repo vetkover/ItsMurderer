@@ -32,27 +32,26 @@ public class onPlayerDeath implements Listener {
         Object spawnAreaProtectObj = readYaml("spawnAreaProtect");
         int spawnAreaProtect = ((Number) spawnAreaProtectObj).intValue();
 
-        if (spawnAreaProtectObj instanceof Number) {
-
-            if (deathLocation.distance(spawnLocation) <= spawnAreaProtect) {
+            if (killer != null && !victim.getDisplayName().contains("[MURDER]") && deathLocation.distance(spawnLocation) < spawnAreaProtect) {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     onlinePlayer.sendMessage("§e WARNING §f" + victimNick + " was kill by " + killerNick + " around spawn at " +
                             "x=" + deathLocation.getBlockX() + ", " +
                             "y=" + deathLocation.getBlockY() + ", " +
                             "z=" + deathLocation.getBlockZ());
                 }
+                writeJson(killerNick, (int) ((System.currentTimeMillis() / 1000) + ((Number) readYaml("punishMurderDuration")).intValue()), "MURDER");
+                killer.setDisplayName("[MURDER] " + killerNick);
+                killer.setPlayerListName("[MURDER] " + killerNick);
+                team2.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
+                team2.addEntry(killerNick);
+                team2.setPrefix("[MURDER] ");
+                killer.setScoreboard(scoreboard);
+                event.setDeathMessage(null);
             }
-            writeJson(killerNick, (int) ((System.currentTimeMillis() / 1000) + ((Number) readYaml("punishMurderDuration")).intValue()), "MURDER");
-            killer.setDisplayName("[MURDER] " + killerNick);
-            killer.setPlayerListName("[MURDER] " + killerNick);
-            team2.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-            team2.addEntry(killerNick);
-            team2.setPrefix("[MURDER] ");
-            killer.setScoreboard(scoreboard);
-            event.setDeathMessage(null);
-        }
 
-        if (killer != null && !killer.getDisplayName().contains("[MURDER]") && deathLocation.distance(spawnLocation) > spawnAreaProtect) {
+
+
+        if (killer != null && !victim.getDisplayName().contains("[MURDER]") && deathLocation.distance(spawnLocation) >= spawnAreaProtect) {
             writeJson(killerNick, (int) ((System.currentTimeMillis() / 1000) + ((Number) readYaml("punishSusDuration")).intValue()), "SUS");
 
             killer.setDisplayName("[SUS] " + killerNick);
